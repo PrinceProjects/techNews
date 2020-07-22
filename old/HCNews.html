@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <h2>Top Latest News</h2>
+      <div class="cell"></div>
+    </div>
+
+    <script>
+
+	let cells = document.getElementById("cell");
+
+window.addEventListener("load", game);
+
+function game(e) {
+  fetch(`https://hacker-news.firebaseio.com/v0/topstories.json`)
+    .then(res => res.json())
+    // .then(data => console.log(data[0]))
+    .then(d => output(d));
+
+  function output(d) {
+    // console.log(d[0]);
+    for (let i = 0; i < d.length; i++) {
+      //////////// Toggle for loop for all or 20 entries ////////////
+      // for (let i = 0; i < 20; i++) {
+      fetch(`https://hacker-news.firebaseio.com/v0/item/${d[i]}.json`)
+        .then(res => res.json())
+        // .then(data => console.log(data));
+        .then(D => create(D));
+
+      function create(D) {
+        // console.log(D);
+
+        function timeConverter(UNIX_timestamp) {
+          var a = new Date(UNIX_timestamp * 1000);
+          var months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+          ];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var hour = a.getHours();
+          var min = a.getMinutes();
+          var sec = a.getSeconds();
+          var time =
+            date +
+            " " +
+            month +
+            " " +
+            year +
+            " " +
+            hour +
+            ":" +
+            min +
+            ":" +
+            sec;
+          return time;
+        }
+        // console.log(timeConverter(D.time));
+
+        var heading = document.createElement("h3"),
+          //   content = document.createElement("p"),
+          author = document.createElement("p"),
+          date = document.createElement("p"),
+          link = document.createElement("a");
+        hrule = document.createElement("hr");
+
+        heading.innerHTML = `${D.title}`;
+        // content.innerHTML = `Content : ${D.text}`;
+        author.innerHTML = `By : ${D.by}`;
+        date.innerHTML = `${timeConverter(D.time)}`;
+        link.href = `${D.url}`;
+        link.innerHTML = `Read More`;
+
+        document.body.appendChild(heading);
+        // document.body.appendChild(content);
+        document.body.appendChild(author);
+        document.body.appendChild(date);
+        document.body.appendChild(link);
+        document.body.appendChild(hrule);
+        // document.appendChild(heading);
+        // console.log(D.title);
+      }
+      // var fragment = create('<div>Hello!</div><p>...</p>');
+      // You can use native DOM methods to insert the fragment:
+      // document.body.insertBefore(fragment, document.body.childNodes[0]);
+    }
+  }
+}
+
+</script>
+  </body>
+</html>
