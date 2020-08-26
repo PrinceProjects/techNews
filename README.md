@@ -1,3 +1,2 @@
 # techNews
-Latest technology news fetched from Hackernews api
-https://princeprojects.github.io/techNews/
+Keep yourself updated by reading the latest [technology news](https://princeprojects.github.io/techNews/) from around the world.
